@@ -45,7 +45,7 @@ app.post("/pitches/:id/makeoffer",async(req,res)=>{
     }
 });
 
-//get all pitches in reverse order
+//get all pitches in reverse  chronological order
 app.get("/pitches",async(req,res)=>{
     try{
         // const getall = await Pitch.find({ _id: { $in: ids }});
