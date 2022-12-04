@@ -5,7 +5,13 @@
 # # Eg:- For Node.js project;
           npm install express
           npm install mongoose
+          npm install nodemon
+          npm install pm2
+          npm install postman
+          npm install uuid
+          npm install python3
           
+
 
 # # Eg:- For Java Gradle Project;
 #           chmod +x gradlew
