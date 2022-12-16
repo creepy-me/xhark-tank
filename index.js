@@ -11,17 +11,24 @@ app.use(express.json());
 //create a pitch
 app.post("/pitches",async(req,res)=>{
     try{
-        const {entrepreneur,pitchTitle,pitchIdea,askAmount,equity} = req.body;
-        const newPitch = await Pitch.create({
-            entrepreneur:entrepreneur,
-            pitchTitle:pitchTitle,
-            pitchIdea:pitchIdea,
-            askAmount:askAmount,
-            equity:equity
-        });
+        // const {entrepreneur,pitchTitle,pitchIdea,askAmount,equity} = req.body;
+        // const newPitch = await Pitch.create({
+        //     entrepreneur:entrepreneur,
+        //     pitchTitle:pitchTitle,
+        //     pitchIdea:pitchIdea,
+        //     askAmount:askAmount,
+        //     equity:equity
+        // });
+        const  newPitch = new Pitch(req.body);
+        // if(newPitch.find({entrepreneur:{$exists:true},pitchTitle:{$exists:true},pitchIdea:{$exists:true},askAmount:{$exists:true},equity:{$exists:true}})!=NULL)
+        // {
+            await newPitch.save();
+            res.status(201).json({id : newPitch._id});
+        // }
+        // else
+        //     res.status(400).json();
         // const newPitch = await new Pitch(req.body);
-        await newPitch.save();
-        res.status(201).json({id : newPitch._id})
+
     }catch(err){
         res.status(400).json();
     }
@@ -36,9 +43,23 @@ app.post("/pitches/:id/makeoffer",async(req,res)=>{
             res.status(404).json();
         else{
         const newOffer = new Offer(req.body);
+        // var rs={
+        //     investor:req.params.investor,
+        //     amount:req.params.amount,
+        //     equity:req.params.equity,
+        //     comment:pitch.comment
+        // };
+        // if(newOffer.find({investor:{$exists:true}},{amount:{$exists:true}},{equity:{$exists:true}},{comment:{$exists:true}}))
+        // {
+            await pitch.findByIdAndUpdate(req.params.id,{$push:{offers: newOffer}});
+            res.status(201).json({id:newOffer._id});
+        // }
+        // else
+        // {
+        //     res.status(400).json();
+        // }
         // const saveOffer = await newOffer.save();
-        await pitch.updateOne({$push:{offers: newOffer}});
-        res.status(201).json({id:newOffer._id});
+        
         }
     }catch(err){
         res.status(400).json();
@@ -63,6 +84,8 @@ app.get("/pitches",async(req,res)=>{
 app.get("/pitches/:id",async(req,res)=>{
     try{
         const pitch = await Pitch.findById(req.params.id);
+        if(!pitch)
+            res.status(404).json();
         var rs={
             id:pitch._id,
             entrepreneur:pitch.entrepreneur,
