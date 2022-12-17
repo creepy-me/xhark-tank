@@ -43,6 +43,7 @@ app.post("/pitches/:id/makeoffer",async(req,res)=>{
             res.status(404).json();
         else{
         const newOffer = new Offer(req.body);
+        await newOffer.save();
         // var rs={
         //     investor:req.params.investor,
         //     amount:req.params.amount,
@@ -51,8 +52,8 @@ app.post("/pitches/:id/makeoffer",async(req,res)=>{
         // };
         // if(newOffer.find({investor:{$exists:true}},{amount:{$exists:true}},{equity:{$exists:true}},{comment:{$exists:true}}))
         // {
-            await pitch.findByIdAndUpdate(req.params.id,{$push:{offers: newOffer}});
-            res.status(201).json({id:newOffer._id});
+            await Pitch.findByIdAndUpdate(req.params.id,{"$push":{"offers": newOffer}});
+            res.status(201).json({id:newOffer.id});
         // }
         // else
         // {
@@ -71,8 +72,18 @@ app.get("/pitches",async(req,res)=>{
     try{
         // const getall = await Pitch.find({ _id: { $in: ids }});
         const sort = { "createdAt": -1 };
-        const pitch = await Pitch.find().sort(sort);//db.products.find().sort({"created_at": 1})
-        res.status(200).json(pitch);
+        const pitches = await Pitch.find().sort(sort);//db.products.find().sort({"created_at": 1})
+        // pitch.forEach(ptch => res.status(200).json(ptch));
+        // pitches = pitches.map(function(pitch) {
+        //     pitch.id  = pitch._id,
+        //     pitch.entrepreneur = pitch.entrepreneur,
+        //     pitch.pitchTitle= pitch.pitchTitle,
+        //     pitch.pitchIdea=pitch.pitchIdea,
+        //     pitch.askAmount=pitch.askAmount,
+        //     pitch.equity=pitch.equity,
+        //     pitch.offers=pitch.offers
+        // })
+        res.status(200).json(pitches);
         // let items = await User.find({ _id: { $in: ids }})
     }catch(err){
         res.status(400).json();
@@ -86,15 +97,22 @@ app.get("/pitches/:id",async(req,res)=>{
         const pitch = await Pitch.findById(req.params.id);
         if(!pitch)
             res.status(404).json();
-        var rs={
-            id:pitch._id,
-            entrepreneur:pitch.entrepreneur,
-            pitchTitle:pitch.pitchTitle,
-            pitchIdea:pitch.pitchIdea,
-            askAmount:pitch.askAmount,
-            equity:pitch.equity,
-            offers:pitch.offers
+        // pitch.populate("offers")
+        // .then(
+        //     pitch=>{
+        //         res.status(200).json(pitch);
+        //     }
+        // );
+        const rs={
+            "id":pitch._id,
+            "entrepreneur":pitch.entrepreneur,
+            "pitchTitle":pitch.pitchTitle,
+            "pitchIdea":pitch.pitchIdea,
+            "askAmount":pitch.askAmount,
+            "equity":pitch.equity,
+            "offers":pitch.offers
         };
+        // ,{id:1,entrepreneur:1,pitchTitle:1,pitchIdea:1,askAmount:1,equity:1,offers:1}
         res.status(200).json(rs);
     }catch(err){
         res.status(404).json();

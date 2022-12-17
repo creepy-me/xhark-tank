@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
+const offer = require('./offer')
 // const { stringify } = require("nodemon/lib/utils")
 const pitchSchema = new mongoose.Schema({
+    id: {
+        type : mongoose.Schema.Types.ObjectId
+        // required : true
+    },
     entrepreneur: {
         type:String,
         required : true
@@ -24,6 +29,8 @@ const pitchSchema = new mongoose.Schema({
         max : 100
     },
     offers : [{
+            // type:mongoose.Schema.Types.ObjectId,
+            // ref : "offer"
             id: {
                 type: mongoose.Schema.Types.ObjectId
             },
