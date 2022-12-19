@@ -8,6 +8,15 @@ mongoose.connect('mongodb://localhost:27017/xhark-tank', {useNewUrlParser: true}
 const Pitch = require("./models/pitch");
 const Offer = require("./models/offer");
 app.use(express.json());
+mongoose.set('toJSON', {
+    virtuals: true,
+    transform: (doc, converted) => {
+      delete converted._id;
+      delete converted.__v;
+      delete converted.createdAt;
+      delete converted.updatedAt;
+    }
+  });
 //create a pitch
 app.post("/pitches",async(req,res)=>{
     try{
