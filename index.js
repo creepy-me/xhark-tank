@@ -72,7 +72,7 @@ app.get("/pitches",async(req,res)=>{
     try{
         // const getall = await Pitch.find({ _id: { $in: ids }});
         const sort = { "createdAt": -1 };
-        const pitches = await Pitch.find().sort(sort).populate('offers');//db.products.find().sort({"created_at": 1})
+        const pitches = await Pitch.find().sort(sort).populate('offers',{id:1,investor:1,amount:1,equity:1,comment:1});//db.products.find().sort({"created_at": 1})
         // pitch.forEach(ptch => res.status(200).json(ptch));
         // pitches = pitches.map(function(pitch) {
         //     pitch.id  = pitch._id,
@@ -94,7 +94,7 @@ app.get("/pitches",async(req,res)=>{
 //get pitch by id
 app.get("/pitches/:id",async(req,res)=>{
     try{
-        const pitch = await Pitch.findById(req.params.id).populate('offers');
+        const pitch = await Pitch.findById(req.params.id).populate('offers',{id:1,investor:1,amount:1,equity:1,comment:1});
         if(!pitch)
             res.status(404).json();
         // pitch.populate("offers")
