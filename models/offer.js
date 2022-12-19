@@ -6,15 +6,21 @@ const offerSchema = new mongoose.Schema({
         required:true
     },
     amount : {
-        type: Number
+        type: Number,
+        required:true
     },
     equity : {
         type: Number,
-        max:100
+        min:0,
+        max:100,
+        required:true
     },
     comment : {
         type:String
-    }
+    },
+},
+{
+    versionKey:false,timestamps:true
 });
 
 module.exports=mongoose.model("offer",offerSchema);

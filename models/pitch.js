@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
-const offer = require('./offer')
+// const offer = require('./offer')
 // const { stringify } = require("nodemon/lib/utils")
 const pitchSchema = new mongoose.Schema({
-    id: {
-        type : mongoose.Schema.Types.ObjectId
-        // required : true
-    },
+    // id: {
+    //     type : mongoose.Schema.Types.ObjectId
+    //     // required : true
+    // },
     entrepreneur: {
         type:String,
         required : true
@@ -13,43 +13,51 @@ const pitchSchema = new mongoose.Schema({
     },
 
     pitchTitle : {
-        type:String
+        type:String,
+        required:true
     },
     
     pitchIdea : {
-        type:String
+        type:String,
+        required:true
     },
     
     askAmount : {
-        type: Number
+        type: Number,
+        required:true
     },
     
     equity : {
         type: Number,
-        max : 100
+        max : 100,
+        min:0,
+        required:true
     },
     offers : [{
-            // type:mongoose.Schema.Types.ObjectId,
-            // ref : "offer"
-            id: {
-                type: mongoose.Schema.Types.ObjectId
-            },
-            investor: {
-                type:String,
-                required:true
-            },
-            amount : {
-                type: Number
-            },
-            equity : {
-                type: Number,
-                max:100
-            },
-            comment : {
-                type:String
-            }
-        }]
+            type:mongoose.Schema.Types.ObjectId,
+            ref : 'offer'
+            // id: {
+            //     type: mongoose.Schema.Types.ObjectId
+            // },
+            // investor: {
+            //     type:String,
+            //     required:true
+            // },
+            // amount : {
+            //     type: Number
+            // },
+            // equity : {
+            //     type: Number,
+            //     max:100
+            // },
+            // comment : {
+            //     type:String
+            // }
+        }],
+},
+{
+    versionKey:false,timestamps:true
 });
-pitchSchema.set('timestamps',true);
+// pitchSchema.set('timestamps',true);
 const pmodel=mongoose.model("pitch",pitchSchema);
 module.exports = pmodel;
