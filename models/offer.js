@@ -1,5 +1,4 @@
 const mongoose=require("mongoose");
-// const { stringify } = require("nodemon/lib/utils");
 const offerSchema = new mongoose.Schema({
     investor: {
         type:String,
